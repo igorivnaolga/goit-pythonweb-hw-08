@@ -9,7 +9,7 @@ class ContactBase(BaseModel):
     email: EmailStr
     phone_number: str = Field(..., max_length=20)
     birthday: date
-    aditional_info: Optional[str] = Field(None, max_length=250)
+    additional_info: Optional[str] = Field(None, max_length=250)
 
 
 class ContactCreate(ContactBase):
@@ -22,7 +22,7 @@ class ContactUpdate(BaseModel):
     email: Optional[EmailStr]
     phone_number: Optional[str] = Field(None, max_length=20)
     birthday: Optional[date]
-    additional_info: Optional[str] = Field(None, max_length=255)
+    additional_info: Optional[str] = Field(None, max_length=250)
 
 
 class ContactResponse(ContactBase):
