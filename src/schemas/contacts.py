@@ -4,28 +4,21 @@ from datetime import date
 
 
 class ContactBase(BaseModel):
-    first_name: str = Field(..., max_length=50)
-    last_name: str = Field(..., max_length=50)
+    first_name: str = Field(min_length=2)
+    last_name: str = Field(min_length=2)
     email: EmailStr
-    phone_number: str = Field(..., max_length=20)
+    phone: str
     birthday: date
-    additional_info: Optional[str] = Field(None, max_length=250)
-
-
-class ContactCreate(ContactBase):
-    pass  # Наслідує всі поля від ContactBase
-
-
-class ContactUpdate(BaseModel):
-    first_name: Optional[str] = Field(None, max_length=50)
-    last_name: Optional[str] = Field(None, max_length=50)
-    email: Optional[EmailStr]
-    phone_number: Optional[str] = Field(None, max_length=20)
-    birthday: Optional[date]
-    additional_info: Optional[str] = Field(None, max_length=250)
+    info: Optional[str]
 
 
 class ContactResponse(ContactBase):
     id: int
+    first_name: str
+    last_name: str
+    email: EmailStr
+    phone: str
+    birthday: date
+    info: str
 
     model_config = ConfigDict(from_attributes=True)
