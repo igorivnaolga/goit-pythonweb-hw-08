@@ -4,7 +4,7 @@ from fastapi import APIRouter, HTTPException, Depends, status, Query, Path
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.database.db import get_db
-from src.schemas.contacts import ContactBase, ContactResponse
+from src.schemas.contacts import ContactBase, ContactResponse, ContactUpdate
 from src.services.contacts import ContactService
 
 router = APIRouter(prefix="/contacts", tags=["contacts"])
@@ -41,9 +41,22 @@ async def create_contact(body: ContactBase, db: AsyncSession = Depends(get_db)):
     return await contact_service.create_contact(body)
 
 
-@router.put("/{contact_id}", response_model=ContactResponse)
+# @router.put("/contact/", response_model=ContactResponse)
+# async def update_contact(
+#     contact_id: int, body: ContactBase, db: AsyncSession = Depends(get_db)
+# ):
+#     contact_service = ContactService(db)
+#     contact = await contact_service.update_contact(contact_id, body)
+#     if contact is None:
+#         raise HTTPException(
+#             status_code=status.HTTP_404_NOT_FOUND, detail="Contact not found"
+#         )
+#     return contact
+
+
+@router.patch("/{contact_id}", response_model=ContactResponse)
 async def update_contact(
-    contact_id: int, body: ContactBase, db: AsyncSession = Depends(get_db)
+    contact_id: int, body: ContactUpdate, db: AsyncSession = Depends(get_db)
 ):
     contact_service = ContactService(db)
     contact = await contact_service.update_contact(contact_id, body)
@@ -67,7 +80,7 @@ async def delete_contact(
 
 
 @router.get(
-    "/birthdays/", response_model=List[ContactResponse], status_code=status.HTTP_200_OK
+    "/birthdays", response_model=List[ContactResponse], status_code=status.HTTP_200_OK
 )
 async def get_upcomming_birthdays(
     skip: int = 0, limit: int = Query(10, le=1000), db: AsyncSession = Depends(get_db)

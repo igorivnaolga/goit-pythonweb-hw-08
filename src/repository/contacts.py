@@ -1,11 +1,12 @@
-from typing import List, Self
+from typing import List, Self, Optional
 from datetime import datetime, timedelta
 
 from sqlalchemy import select, delete, extract, or_, and_
+from sqlalchemy.sql import extract
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.database.models import Contact
-from src.schemas.contacts import ContactBase
+from src.schemas.contacts import ContactBase, ContactUpdate
 
 
 class ContactRepository:
@@ -52,8 +53,19 @@ class ContactRepository:
         await self.db.commit()
         return True
 
+    # async def update_contact(
+    #     self: Self, contact_id: int, body: ContactBase
+    # ) -> Contact | None:
+    #     contact = await self.get_contact(contact_id)
+    #     if contact:
+    #         for key, value in body.model_dump().items():
+    #             setattr(contact, key, value)
+    #         await self.db.commit()
+    #         await self.db.refresh(contact)
+    #     return contact
+
     async def update_contact(
-        self: Self, contact_id: int, body: ContactBase
+        self, contact_id: int, body: ContactUpdate
     ) -> Contact | None:
         contact = await self.get_contact(contact_id)
         if contact:
@@ -62,8 +74,6 @@ class ContactRepository:
             await self.db.commit()
             await self.db.refresh(contact)
         return contact
-
-    from sqlalchemy.sql import extract
 
     async def birthdays(self: Self, skip: int, limit: int) -> List[Contact]:
         today = datetime.now().date()

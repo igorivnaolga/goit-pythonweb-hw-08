@@ -12,6 +12,15 @@ class ContactBase(BaseModel):
     info: Optional[str]
 
 
+class ContactUpdate(BaseModel):
+    first_name: Optional[str]
+    last_name: Optional[str]
+    email: Optional[EmailStr]
+    phone: Optional[str]
+    birthday: Optional[date]
+    info: Optional[str]
+
+
 class ContactResponse(ContactBase):
     id: int
     first_name: str
