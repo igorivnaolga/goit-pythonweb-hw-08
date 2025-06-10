@@ -69,7 +69,7 @@ class ContactRepository:
     ) -> Contact | None:
         contact = await self.get_contact(contact_id)
         if contact:
-            for key, value in body.model_dump().items():
+            for key, value in body.model_dump(exclude_unset=True).items():
                 setattr(contact, key, value)
             await self.db.commit()
             await self.db.refresh(contact)
