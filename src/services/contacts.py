@@ -32,4 +32,4 @@ class ContactService:
         return await self.repository.delete_contact(contact_id)
 
     async def birthdays(self: Self, skip: int, limit: int):
-        return await self.repository.birthdays(skip, limit)
+        return await self.repository.get_birthdays(skip, limit)

@@ -75,7 +75,7 @@ class ContactRepository:
             await self.db.refresh(contact)
         return contact
 
-    async def birthdays(self: Self, skip: int, limit: int) -> List[Contact]:
+    async def get_birthdays(self: Self, skip: int, limit: int) -> List[Contact]:
         today = datetime.now().date()
         today_month = today.month
         today_day = today.day
